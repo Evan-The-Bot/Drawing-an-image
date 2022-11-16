@@ -1,95 +1,108 @@
-//Global Variables
 int appWidth, appHeight;
-Boolean widthLarger=false, heightLarger=false;
-float picWidthAdjusted=0.0, picHeightAdjusted=0.0;
 float backgroundImageX, backgroundImageY, backgroundImageWidth, backgroundImageHeight;
+float picWidthAdjusted=0.0, picHeightAdjusted=0.0;
 PImage pic;
 Boolean nightMode=false;
+int tintDayMode=64, tintDayModeOpacity=0, tintRed=64, tintGreen=64, tintBlue=64, tintNightModeOpacity=0;
+Float topHalfX, topHalfY ,topHalfWidth, topHalfHeight, bottomHalfX, bottomHalfY, bottomHalfWidth, bottomHalfHeight;
 //
 void setup()
 {
-  size(1000, 800); //Landscape
-  //Copy Display Algorithm from Hello World
+  size(768, 1020);
   appWidth = width;
   appHeight = height;
   //
-  //Image Dimensions for Aspect Ratio
-  //Obi-wan-star-wars-jedi-23864621-800-600.jpg
-  //Note: Dimensions are found in the image file / Right Click / Properties / Details
-  int picWidth = 800;
-  int picHeight = 600;
+  int picWidth = 768;
+  int picHeight = 1020;
+  int pic2Width = ;
+  int pic2Height = ;
+  int pic3Height = ;
+  int pic3Width = ;
   //
-  float smallerDimension, largerDimension;
-  //Image Orientation: Landscape, Portrait, Square
-  if ( picWidth >= picHeight ) { //True if Landscape or Square
+  float smallerDimension, largerDimension, imageWidthRatio=0.0, imageHeightRatio=0.0;
+  Boolean widthLarger=false, heightLarger=false;
+  if ( picWidth >= picHeight ) {
     largerDimension = picWidth;
     smallerDimension = picHeight;
     widthLarger = true;
-  } else { //False if Portrait
+  } else {
     largerDimension = picHeight;
     smallerDimension = picWidth;
     heightLarger = true;
   }
   //
-  //Teaching example, width is known to be larger
-  float imageWidthRatio=0.0, imageHeightRatio=0.0;
-  //Better Image Stretch Algorithm, smaller image to larger CANVAS
   if ( appWidth >= picWidth ) {
-    picWidthAdjusted = appWidth;
+    picWidthAdjusted = appWidth; 
     //
     if ( widthLarger == true ) imageWidthRatio = largerDimension / largerDimension;
     //
     if ( appHeight >= picHeight ) {
+      //
       if ( widthLarger == true ) imageHeightRatio = smallerDimension / largerDimension;
       picHeightAdjusted = picWidthAdjusted * imageHeightRatio;
-      if (appHeight < picHeightAdjusted ) {
-        println("STOP: image is too big for CANVAS");
-        exit(); //stops any further use of APP
-        //Remember: goal is 1:1 aspect ratio
+      if ( appHeight < picHeightAdjusted ) {
+        println("STOP: you have violated the geometry");
+        exit(); 
       }
     } else {
-      //Image smaller than CANVAS needs separate algorithm
-    }
+      println("CANVAS is smaller than Image");
+     } 
   } else {
-    //Image smaller than CANVAS needs separate algorithm
+    println("CANVAS is smaller than Image");
   }
-  //
-  //Verifying Variable Values after algoroithm
-  println("App Width:", appWidth, " and App Height:", appHeight);
-  println("Larger Image dimension is:", largerDimension);
-  println("Image dimensions are:", picWidth, picHeight);
-  println("Adjusted Image dimesnions are (stretch is goal):", picWidthAdjusted, picHeightAdjusted);
+    
   //
   //Population
-  pic = loadImage("../Images Used/Obi-wan-star-wars-jedi-23864621-800-600.jpg");
-  backgroundImageX = appWidth*0;
-  backgroundImageY = appHeight*0;
-  backgroundImageWidth = appWidth-1;
-  backgroundImageHeight = appHeight-1;
+  pic = loadImage("../Images/PXL_20220815_182722808.jpg");
+  backgroundImageX = appWidth * 0;
+  backgroundImageY = appHeight * 0;
+  backgroundImageWidth = appWidth -1 ;
+  backgroundImageHeight = appHeight -1 ;
+  topHalfX = appWidth * 1/2;
+  topHalfY = appHeight * 1/2;
+  topHalfWidth = appWidth * 1/2;
+  topHalfHeight = appHeight * 1/2;
+  bottomHalfX = appWidth * 1/2;
+  bottomHalfY = appHeight * 1/2;
+  bottomHalfWidth = appWidth * 1/2;
+  bottomHalfHeight = appHeight * 1/2;
+  
   //
-  //Rectangular Layout and Image Drawing to CANVAS
-  //rect( backgroundImageX, backgroundImageY, backgroundImageWidth, backgroundImageHeight );
+  rect(backgroundImageX,backgroundImageY,backgroundImageWidth,backgroundImageHeight);
+  rect(topHalfX,topHalfY,topHalfWidth,topHalfHeight);
+  rect (bottomHalfX, bottomHalfY, bottomHalfWidth, bottomHalfHeight);
   //
-  //Background Image must be single executed code
-  if (nightMode == false) tint(255, 50); //Gray Scale: use 1/2 tint value for white (i.e. 128/256=1/2)
-  //image( pic, backgroundImageX, backgroundImageY, backgroundImageWidth, backgroundImageHeight);
+  println("App Width:", appWidth, " and App Height:", appHeight);
+  println("Image dimensions are:", picWidth, picHeight);
+  println("Larger Image dimension is:", largerDimension);
+  println("Adjusted Image dimesnions are (stretch is goal):", picWidthAdjusted, picHeightAdjusted);
+  //
+  if ( nightMode == false ) tint(tintDayMode, tintDayModeOpacity); 
+  if ( nightMode == true ) tint(tintRed, tintGreen, tintBlue, tintNightModeOpacity);
   image( pic, backgroundImageX, backgroundImageY, picWidthAdjusted, picHeightAdjusted);
-  //
-}//End setup
+}
 //
-void draw()
-{
-  if (nightMode == true) {
-    //RGB tint() works in draw()
-    tint(64, 64, 40); //RGB: Night Mode
-    image( pic, backgroundImageX, backgroundImageY, picWidthAdjusted, picHeightAdjusted);
-  }
+void draw() {
+  image(topHalfX,topHalfY,topHalfWidth,topHalfHeight);
+  image(bottomHalfX, bottomHalfY, bottomHalfWidth, bottomHalfHeight);
+
 }//End draw
 //
 void keyPressed() {
 }//End keyPressed
 //
 void mousePressed() {
-  if (mouseButton == LEFT) nightMode = true;
-  if (mouseButton == RIGHT) nightMode = false;
+  //  
+  if ( mouseButton == LEFT) {
+    nightMode = true;
+    rect( backgroundImageX, backgroundImageY, backgroundImageWidth, backgroundImageHeight );
+    tint(64, 64, 40); 
+    image( pic, backgroundImageX, backgroundImageY, picWidthAdjusted, picHeightAdjusted);
+  }
+  if ( mouseButton == RIGHT ) {
+    nightMode = false;
+    rect( backgroundImageX, backgroundImageY, backgroundImageWidth, backgroundImageHeight );
+    tint(0, 500, 0);
+    image(pic, backgroundImageX, backgroundImageY, picWidthAdjusted, picHeightAdjusted);
+  }
 }
